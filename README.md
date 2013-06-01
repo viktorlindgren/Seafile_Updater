@@ -7,7 +7,7 @@ Download it [here](https://github.com/viktorlindgren/Seafile_Updater/raw/master/
 
 Config
 ============
-Go %Appdata%\Seafile updater\config.txt 
+Go to %Appdata%\Seafile updater\config.txt 
 if you want to change interval it check for updates.
 
 Default is set to seven days.
