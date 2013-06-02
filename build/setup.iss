@@ -33,7 +33,7 @@ begin
       // Everything went fine
     end
     else begin
-        msgbox('Could overwrite existing installation, please uninstall before installing', mbError, MB_OK)
+        msgbox('Could not overwrite existing installation, please uninstall before installing', mbError, MB_OK)
         SysErrorMessage(ResultCode)
     end
   end;  
