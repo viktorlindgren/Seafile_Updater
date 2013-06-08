@@ -1,8 +1,8 @@
-from subprocess import Popen,PIPE
-import urllib2, re, os
-import tempfile, platform
-import time
 from ConfigHandler import loadConfig, saveConfig, timeSinceLastCheck, confExisted
+from subprocess import Popen,PIPE
+import tempfile, platform
+import urllib2, re, os
+import time
 
 url = "http://seafile.com/en/download/"
 
@@ -13,7 +13,7 @@ def getPath():
 	if not(os.path.exists(getPath)):
 		getPath = os.environ["ProgramFiles(x86)"] + sfStart
 		if not(os.path.exists(getPath)):
-			raise "Warning: Could not start seafile"
+			raise Exception("Warning: Could not start seafile")
 	return getPath
 
 def dl(url):
@@ -39,34 +39,24 @@ def update(url, oldaddr):
 	f.write(dl(addr))
 	f.close()
 
-	# Shutdown any running seafile
-	cmd = "taskkill /im seafile-applet.exe"
-	pipe = Popen(cmd, shell=True).wait()
-
-	# Check that it is really dead
-	cmd ='tasklist /FI "IMAGENAME eq seafile-applet.exe"'
-	pipe = Popen(cmd, shell=True, stdout=PIPE).stdout
-	output = pipe.read()
-
-	if "PID" in output:
-		raise "Failed to kill seafile nicely, please close the application"
-
 	# Install the file
-	cmd = "msiexec /passive /quiet /i %s" % f.name
-	if Popen(cmd, shell=True).wait() != 0:
-		raise "Installing went wrong"
+	cmd = "msiexec /passive /quiet /i %s %s" % (f.name,"/l*v %temp%\\msi.log")
+	installerStatusCode = Popen(cmd, shell=True).wait()
 
 	try:
+		# Starting seafile again
 		cmd = "\"%s\"" % getPath()
 		Popen(cmd)
-		print "Seafile should be started now"
 	except:
 		print "Warning: Could not find the installed path, please start seafile manually."
+
+	if installerStatusCode != 0:
+		raise Exception("Installing went wrong")
 	return addr
 
 if __name__=="__main__":
 	if not "Windows" in platform.platform():
-		raise "The autoupdate only works on windows"
+		raise Exception("The autoupdate only works on windows")
 
 	last_updated, interval_in_days, installed_addr = loadConfig()
 	if not confExisted: # Updated directly first time

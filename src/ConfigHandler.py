@@ -8,7 +8,7 @@ dateformat = "%Y-%m-%d %H:%M:%S"
 
 settingsfolder = (os.getenv('AppData') or os.getenv('HOME') + ".config/") + \
 	os.sep + section
-configPath = settingsfolder + os.sep + " config.txt"
+configPath = settingsfolder + os.sep + "config.txt"
 
 def ensure_dir(f):
 	d = os.path.dirname(f)

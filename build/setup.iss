@@ -1,7 +1,7 @@
 [Setup]
 AppId={{6D49D8DA-82FB-411B-895A-3082F92D3CA2}
 AppName=Seafile Updater
-AppVersion=1.0
+AppVersion=1.1
 AppPublisher=Viktor Lindgren
 DefaultDirName={pf}\Seafile Updater
 DefaultGroupName=Seafile Updater
@@ -9,6 +9,7 @@ OutputBaseFilename=Seafile Updater Installer
 Compression=lzma
 SolidCompression=yes
 OutputDir="."
+PrivilegesRequired=admin
 
 
 DisableWelcomePage=yes
@@ -52,7 +53,7 @@ Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createal
 Name: "{userstartup}\Seafile Updater"; Filename: "{app}\Check4SeafileUpdate.exe"
 
 [Run]
-Filename: "{app}\Check4SeafileUpdate.exe"; Flags: nowait postinstall skipifsilent; Description: "{cm:LaunchProgram,Seafile Updater}"
+Filename: "{app}\Check4SeafileUpdate.exe"; Flags: nowait shellexec postinstall; Description: "{cm:LaunchProgram,Seafile Updater}"
 
 [UninstallRun]
 Filename: "taskkill"; Parameters: "/F /im Check4SeafileUpdate.exe"; Flags: runhidden shellexec waituntilterminated
