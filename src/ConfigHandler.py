@@ -1,6 +1,11 @@
 from datetime import datetime
 import ConfigParser,os
 
+def ensure_dir(f):
+	d = os.path.dirname(f)
+	if not os.path.exists(d):
+		os.makedirs(d)
+
 section = "Seafile Updater"
 
 config = ConfigParser.RawConfigParser()
@@ -10,18 +15,15 @@ settingsfolder = (os.getenv('AppData') or os.getenv('HOME') + ".config/") + \
 	os.sep + section
 configPath = settingsfolder + os.sep + "config.txt"
 
-def ensure_dir(f):
-	d = os.path.dirname(f)
-	if not os.path.exists(d):
-		os.makedirs(d)
-
 ensure_dir(configPath)
 confExisted = os.path.exists(configPath)
 
 def timeSinceLastCheck(lastcheck):
-
-	now = datetime.now()
-	return (now - lastcheck).total_seconds()
+	if lastcheck:
+		now = datetime.now()
+		return (now - lastcheck).total_seconds()
+	else:
+		return 0
 
 
 def saveConfig(interval_in_days,installed_addr):
@@ -64,6 +66,6 @@ def loadConfig():
 		installed_addr = config.get(section, 'installed_addr')
 	except:
 		pass
-	return last_updated, interval_in_days,installed_addr
+	return last_updated, interval_in_days, installed_addr
 
 

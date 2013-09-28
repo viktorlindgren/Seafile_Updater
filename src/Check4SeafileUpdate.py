@@ -1,5 +1,5 @@
 from ConfigHandler import loadConfig, saveConfig, timeSinceLastCheck, confExisted
-from subprocess import Popen,PIPE
+from subprocess import Popen
 import tempfile, platform
 import urllib2, re, os
 import time
@@ -54,7 +54,7 @@ def update(url, oldaddr):
 		raise Exception("Installing went wrong")
 	return addr
 
-if __name__=="__main__":
+if __name__ == "__main__":
 	if not "Windows" in platform.platform():
 		raise Exception("The autoupdate only works on windows")
 
@@ -63,13 +63,15 @@ if __name__=="__main__":
 		interval_in_days = 0
 
 	while True:
-		passedtime =  timeSinceLastCheck(last_updated) if last_updated else 0
+		passedtime = timeSinceLastCheck(last_updated)
 		time.sleep(max(interval_in_days*24*3600-passedtime,0))
 
 		try:
 			installed_addr = update(url,installed_addr)
 		except Exception, e:
 			print e
+			with open("debug.log", 'wb') as debuglog:
+				debuglog.write(e)
 
 		last_updated, interval_in_days, _ = loadConfig()
 		saveConfig(interval_in_days,installed_addr)
