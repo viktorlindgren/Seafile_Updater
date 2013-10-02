@@ -3,7 +3,8 @@ Seafile Updater
 
 Updates the Seafile client to the latest version of Seafile. Windows Only.
 
-Download it [here](https://github.com/viktorlindgren/Seafile_Updater/raw/master/Seafile%20Updater%20Installer.zip) to install.
+
+Download it [here](Seafile Updater Installer.zip?raw=true) to install.
 
 Changelog:
 
